@@ -1,18 +1,47 @@
-# Vue 3 + TypeScript + Vite
+# 数学奥林匹克竞赛培训互动答题教学平台 - 教师端
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+这个项目是数学奥林匹克竞赛培训互动答题教学平台的教师端前端部分。它旨在为教师提供一个便捷的平台，以便更有效地管理题库、组织竞赛、跟踪学生进度，并与学生进行互动。
 
-## Recommended IDE Setup
+## 功能特点
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- **题库管理**：教师可以添加、编辑和删除题目，以构建和维护题库。
+- **竞赛组织**：教师可以创建和管理竞赛，包括设置竞赛时间、选择题目和发布竞赛信息。
+- **学生进度跟踪**：提供学生答题情况和竞赛成绩的实时反馈，帮助教师了解学生的学习进度。
 
-## Type Support For `.vue` Imports in TS
+## 技术栈
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- **Vue 3**：利用Vue 3的组合式API，构建高效的用户界面。
+- **Element Plus**：使用Element Plus组件库，快速搭建美观的界面。
+- **Pinia**：作为状态管理库，管理应用的状态和逻辑。
+- **ECharts**：集成ECharts，用于数据可视化。
+- **Vite**：使用Vite作为构建工具，提高开发效率。
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## 项目设置
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### 安装依赖
+
+```bash
+pnpm install
+```
+
+### 启动开发服务器
+
+```bash
+pnpm run dev
+```
+
+### 构建生产版本
+
+```bash
+pnpm run build
+```
+
+### 运行Lint检查并自动修复文件
+
+```bash
+pnpm run lint
+```
+
+## 联系方式
+
+如有任何问题或建议，请通过[Issues](https://github.com/hr1201/AQadmin/issues)与我们联系。

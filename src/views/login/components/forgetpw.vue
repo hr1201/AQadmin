@@ -80,7 +80,7 @@ const onSubmit = async (userData: any) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .forms {
   display: flex;
   flex-direction: column;

@@ -19,7 +19,6 @@
     "axios": "^1.6.8",
     "echarts": "^5.5.0",
     "element-plus": "^2.6.1",
-    "less": "^4.2.0",
     "pinia": "^2.1.7",
     "unplugin-icons": "^0.18.5",
     "vue": "^3.4.21",

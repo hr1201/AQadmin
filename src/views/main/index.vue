@@ -20,7 +20,7 @@
 // import sidebars from '../components/sidebar.vue';
 // import headers from '../components/header.vue';
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 // .layout-container .el-aside {
 //     color: var(--el-text-color-primary);
 //     background: #f5f5f5;

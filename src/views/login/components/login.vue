@@ -92,7 +92,7 @@ const onSubmit = (userData: any) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .forms {
   display: flex;
   flex-direction: column;
