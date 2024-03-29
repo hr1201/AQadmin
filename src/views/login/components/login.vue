@@ -53,7 +53,8 @@ import { reactive, ref, markRaw } from 'vue';
 import register from './register.vue';
 import forgetpw from './forgetpw.vue';
 import { User, Search, View, Hide } from '@element-plus/icons-vue';
-
+import { useRouter } from 'vue-router';
+// import { loginh } from '../../../http/index.ts';
 // 动态组件，可以动态切换
 const change = ref(0);
 const active = ref();
@@ -87,8 +88,18 @@ const switchpwd = () => {
 // 只有用户名在数据库中存在时才可以点击忘记密码
 
 // 登录按钮
+const router = useRouter();
 const onSubmit = (userData: any) => {
   console.log(userData.password + 'submit!' + userData.username);
+  // loginh(userData.username, userData.password).then((response: any) => {
+  //   if (response.data.code == '200' && response.data.data) {
+  //     ElMessage.success(`欢迎教师！！！` + response.msg);
+  //   } else {
+  //     ElMessage.error('账号或密码输入错误！！！');
+  //     // console.log(response.data)
+  //   }
+  // });
+  router.push('/homePage');
 };
 </script>
 

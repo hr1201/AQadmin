@@ -49,7 +49,7 @@ const userData = reactive({
 
 const onSubmit = (userData: any) => {
   console.log(userData.password + 'submit!' + userData.adminname);
-  loginh(userData).then((response: any) => {
+  loginh(userData.adminname, userData.adminpsw).then((response: any) => {
     if (response.data.code == '200' && response.data.data) {
       ElMessage.success(`欢迎管理员！！！` + response.msg);
     } else {

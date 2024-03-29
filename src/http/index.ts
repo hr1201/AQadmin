@@ -11,6 +11,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // 登录
-export const loginh = (userData: any) => {
-  return http.post(urls + '/admin/register', userData);
+export const loginh = (adminpsw: string, adminname: string) => {
+  return http.post(urls + '/admin/login', { adminname: adminname, adminpsw: adminpsw });
 };
