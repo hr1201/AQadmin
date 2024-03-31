@@ -51,7 +51,7 @@
           </el-form-item>
           <el-form-item class="btns">
             <el-button class="btn" type="primary" @click="submitForm(ruleFormRef)">
-              添加
+              更新
             </el-button>
             <el-button class="btn" type="info" @click="resetForm(ruleFormRef)">重置</el-button>
           </el-form-item>
