@@ -102,6 +102,7 @@ const onSubmit = async (userData: any) => {
 
 .elinput {
   width: 36vw;
+  max-width: 480px;
   height: 50px;
 }
 

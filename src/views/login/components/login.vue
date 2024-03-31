@@ -99,6 +99,7 @@ const onSubmit = (userData: any) => {
   //     // console.log(response.data)
   //   }
   // });
+  sessionStorage.setItem('token', '666');
   router.push('/homePage');
 };
 </script>
@@ -125,6 +126,7 @@ const onSubmit = (userData: any) => {
 
 .elinput {
   width: 36vw;
+  max-width: 480px;
   height: 50px;
 }
 

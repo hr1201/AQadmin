@@ -40,27 +40,25 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '题目管理页',
           requiresAuth: true
-        },
-        children: [
-          {
-            path: '/addTopic',
-            name: 'addTopic',
-            component: () => import('../views/topicManagement/views/addTopic.vue'),
-            meta: {
-              title: '添加题目',
-              requiresAuth: true
-            }
-          },
-          {
-            path: '/editTopic',
-            name: 'editTopic',
-            component: () => import('../views/topicManagement/views/editTopic.vue'),
-            meta: {
-              title: '修改题目',
-              requiresAuth: true
-            }
-          }
-        ]
+        }
+      },
+      {
+        path: '/topicManagement/addTopic',
+        name: 'addTopic',
+        component: () => import('../views/topicManagement/addTopic/index.vue'),
+        meta: {
+          title: '添加题目',
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/topicManagement/editTopic',
+        name: 'editTopic',
+        component: () => import('../views/topicManagement/editTopic/index.vue'),
+        meta: {
+          title: '修改题目',
+          requiresAuth: true
+        }
       }
     ]
   }

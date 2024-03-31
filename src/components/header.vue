@@ -118,7 +118,9 @@ const logout = () => {
 .el-menu-popper-demo {
   background-color: #ffffff;
   border-right: 0;
-
+  .el-menu-item {
+    font-size: 18px;
+  }
   .el-menu-item::before {
     content: '';
     position: absolute;
@@ -136,6 +138,10 @@ const logout = () => {
 
   .el-menu-item:hover {
     background-color: #ffffff;
+  }
+
+  .el-menu-item.is-active {
+    background-color: #fff;
   }
 }
 
