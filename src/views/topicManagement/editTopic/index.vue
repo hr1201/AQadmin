@@ -2,7 +2,7 @@
   <div class="layouts">
     <el-button type="default" :icon="DArrowLeft" @click="back" />
     <div class="avatar">
-      <p class="title">修改题目</p>
+      <p class="title">更新题目</p>
       <img
         class="avatar-image"
         src="../../../assets/topicManagement/addTopixImg2.png"
@@ -51,7 +51,7 @@
           </el-form-item>
           <el-form-item class="btns">
             <el-button class="btn" type="primary" @click="submitForm(ruleFormRef)">
-              添加
+              更新
             </el-button>
             <el-button class="btn" type="info" @click="resetForm(ruleFormRef)">重置</el-button>
           </el-form-item>
@@ -159,6 +159,15 @@ const back = () => {
 
 // 将参数赋值过去
 console.log(route.query.type);
+// 接收题目管理页面传过来的数据
+onMounted(() => {
+  (ruleForm.one = route.query.topic ? route.query?.topic.toString() : ''),
+    (ruleForm.two = route.query.answer ? route.query?.answer.toString() : ''),
+    (ruleForm.type = route.query.type ? route.query?.type.toString() : ''),
+    (ruleForm.difficulty = route.query.difficulty ? route.query?.difficulty.toString() : '');
+});
+
+router.replace({ query: {} });
 </script>
 <style lang="scss" scoped>
 .layouts {
