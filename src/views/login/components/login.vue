@@ -8,9 +8,10 @@
       :inline="true"
       label-width="auto"
       :model="userData"
+      ref="formRef"
+      :rules="rules"
       class="demo-form-inline"
       style="max-width: 50%; line-height: 50px"
-      @keyup.enter="onSubmit"
     >
       <el-form-item prop="username">
         <el-input
@@ -33,7 +34,7 @@
               <el-icon v-if="showpwd"><View style="font-size: 16px" /></el-icon>
               <el-icon v-else><Hide style="font-size: 16px" /></el-icon>
             </span>
-            <span class="span" @click="select(cpName[1], 1)">忘记密码?</span>
+            <span class="span" @click="select(cpName[1], 1)"> 忘记密码? </span>
           </template>
         </el-input>
       </el-form-item>
@@ -44,7 +45,7 @@
     </el-form>
   </div>
   <div v-else>
-    <component :is="change" />
+    <component :is="change" :adminname="userData.username" />
   </div>
 </template>
 
@@ -54,7 +55,9 @@ import register from './register.vue';
 import forgetpw from './forgetpw.vue';
 import { User, Search, View, Hide } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
-// import { loginh } from '../../../http/index.ts';
+import { FormItemRule } from 'element-plus';
+import { loginh } from '../../../http/index.ts';
+
 // 动态组件，可以动态切换
 const change = ref(0);
 const active = ref();
@@ -74,9 +77,36 @@ const select = (item: any, index: any) => {
   change.value = item.cpn;
 };
 
-const userData = reactive({
+type From = {
+  username: string;
+  password: string;
+};
+
+const userData = reactive<From>({
   username: '',
   password: ''
+});
+
+const formRef = ref();
+
+type Rules = {
+  [k in keyof From]?: Array<FormItemRule>;
+};
+const rules = reactive<Rules>({
+  username: [
+    {
+      required: true, //设为必填字段
+      message: '请输入工号',
+      type: 'string'
+    }
+  ],
+  password: [
+    {
+      required: true, //设为必填字段
+      message: '请输入密码',
+      type: 'string'
+    }
+  ]
 });
 
 // 控制eye图标
@@ -89,18 +119,28 @@ const switchpwd = () => {
 
 // 登录按钮
 const router = useRouter();
-const onSubmit = (userData: any) => {
-  console.log(userData.password + 'submit!' + userData.username);
-  // loginh(userData.username, userData.password).then((response: any) => {
-  //   if (response.data.code == '200' && response.data.data) {
-  //     ElMessage.success(`欢迎教师！！！` + response.msg);
+const onSubmit = async (userData: any) => {
+  loginh(userData.username, userData.password).then((response: any) => {
+    console.log(response);
+    if (response.status === 200 && response.data === '登录成功') {
+      ElMessage.success(`欢迎教师！！！` + response.msg);
+      sessionStorage.setItem('token', '666');
+      router.push('/homePage');
+    } else {
+      ElMessage.error('账号或密码输入错误！！！');
+      // console.log(response.data)
+    }
+  });
+  // formRef.value.validate(async (valid: any) => {
+  //   if (valid) {
+  //     console.log(userData.password + 'submit!' + userData.username);
+
   //   } else {
-  //     ElMessage.error('账号或密码输入错误！！！');
-  //     // console.log(response.data)
+  //     console.log('验证失败');
+  //     // 可以在这里显示一些错误信息
   //   }
   // });
-  sessionStorage.setItem('token', '666');
-  router.push('/homePage');
+  // router.push('/homePage');
 };
 </script>
 

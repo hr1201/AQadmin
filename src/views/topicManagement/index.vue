@@ -55,7 +55,7 @@
     </div>
 
     <!-- 通过v-bind向父组件传入类型value和难度value -->
-    <topicTable :typeValue :dfValue />
+    <topicTable :typeValue :dfValue :input1 />
 
     <el-button type="primary" class="addbtn" @click="addTopic">添加题目</el-button>
   </div>
@@ -131,6 +131,7 @@ const addTopic = () => {
 
 // 修改页面，需要在点击修改按钮后，获取到表格的原本数据，然后进行修改
 // 添加页面，需要填入数据后可以直接添加至表格中
+// 在登录页面回车不能获取到数据
 </script>
 <style lang="scss" scoped>
 .el-menu {

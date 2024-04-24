@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
   const env: any = loadEnv(mode, process.cwd(), '');
 
   return {
+    base: './',
     define: {
       __APP_ENV__: env.APP_ENV
     },
@@ -38,7 +39,7 @@ export default defineConfig(({ mode }) => {
           })
         ],
 
-        dts: path.resolve(pathSrc, 'auto-imports.d.ts')
+        dts: path.resolve(pathSrc, 'src/auto-imports.d.ts')
       }),
       Components({
         resolvers: [
@@ -50,7 +51,7 @@ export default defineConfig(({ mode }) => {
           ElementPlusResolver()
         ],
 
-        dts: path.resolve(pathSrc, 'components.d.ts')
+        dts: path.resolve(pathSrc, 'src/components.d.ts')
       }),
       Icons({
         autoInstall: true,

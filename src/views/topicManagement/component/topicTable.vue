@@ -43,17 +43,52 @@
 </template>
 
 <script lang="ts" setup>
-import { generateMathProblems } from '../helper/topicBuild.ts';
-import { TopicData } from '../helper/rules.ts';
-import { useRoute, useRouter } from 'vue-router';
+import { TopicData, TopicDataAdmin } from '../helper/rules.ts';
+import { useRouter } from 'vue-router';
+import { selectAllProblem, deleteProblem } from '../../../http/index.ts';
 
-const route = useRoute();
+// const route = useRoute();
 const router = useRouter();
 
 let tableData = ref<TopicData[]>([]);
 
+function getTypeBySymbol(symbol: string): string {
+  switch (symbol) {
+    case '+':
+      return '加法';
+    case '-':
+      return '减法';
+    case '*':
+      return '乘法';
+    case '/':
+      return '除法';
+    default:
+      return '未知';
+  }
+}
+
+function selectAllproblem() {
+  tableData.value = []; // 初始化
+  selectAllProblem().then((response) => {
+    response.data.forEach((element: TopicDataAdmin) => {
+      tableData.value.push({
+        index: element.problemid,
+        topic: element.parm1 + element.symbol + element.parm2,
+        answer: element.answer,
+        type: getTypeBySymbol(element.symbol),
+        difficulty: element.rank
+      });
+    });
+    tableData.value = tableData.value.filter((item) => item.index !== 0).map(toRaw);
+  });
+}
+
 onMounted(() => {
-  tableData.value.push(...generateMathProblems(20));
+  // 请求后端所有题目数据
+  // 后端传过来parm1，parm2，symbol，需要组合为topic；
+  // 并且需要根据symbol，修改type，
+  // 那么就可以将response.data中的数据进行转换
+  selectAllproblem();
 });
 
 // 修改和删除方法
@@ -80,7 +115,18 @@ const handleEdit = (index: number, row: TopicData) => {
 
 // 删除按钮
 const handleDelete = (index: number, row: TopicData) => {
-  console.log(index, row);
+  console.log(row.index, index);
+  deleteProblem(row.index.toString()).then((response: any) => {
+    if (response.status === 200 && response.data === '删除题目成功') {
+      ElMessage.success('删除题目成功');
+      selectAllproblem();
+      router.push({
+        path: '/topicManagement'
+      });
+    } else {
+      ElMessage.error('删除题目失败');
+    }
+  });
 };
 
 // 难度颜色划分
@@ -106,6 +152,10 @@ const props = defineProps({
   dfValue: {
     type: String,
     default: ''
+  },
+  input1: {
+    type: String,
+    default: ''
   }
 });
 
@@ -117,6 +167,7 @@ const fillterTableData = computed(() => {
     if (!props.typeValue && props.dfValue) return item.difficulty === props.dfValue;
     return item.type === props.typeValue && item.difficulty === props.dfValue;
   });
+  // 当input1变化时，就对后端发起请求获取数据，需要进行防抖节流，将请求获取的数据直接赋值给tableData.value
 });
 
 // 分页
@@ -132,18 +183,18 @@ const handleCurrentChange = (currentPage: number) => {
   currentPages.value = currentPage;
 };
 
-// 接收添加题目页面传过来的数据
-let obj: TopicData = {
-  index: tableData.value.length,
-  topic: route.query.one ? route.query?.one.toString() : '',
-  answer: route.query.two ? route.query?.two.toString() : '',
-  type: route.query.type ? route.query?.type.toString() : '',
-  difficulty: route.query.difficulty ? route.query?.difficulty.toString() : ''
-};
-onMounted(() => {
-  tableData.value.push(obj);
-});
-router.replace({ query: {} });
+// // 接收添加题目页面传过来的数据
+// let obj: TopicData = {
+//   index: tableData.value.length,
+//   topic: route.query.one ? route.query?.one.toString() : '',
+//   answer: route.query.two ? route.query?.two.toString() : '',
+//   type: route.query.type ? route.query?.type.toString() : '',
+//   difficulty: route.query.difficulty ? route.query?.difficulty.toString() : ''
+// };
+// onMounted(() => {
+//   tableData.value.push(obj);
+// });
+// router.replace({ query: {} });
 </script>
 <style lang="scss" scoped>
 :deep(.el-table__row) {

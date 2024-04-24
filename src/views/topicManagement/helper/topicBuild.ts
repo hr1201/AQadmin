@@ -1,9 +1,9 @@
-import { TopicData } from './rules.ts';
+import { TopicDataAdmin } from './rules.ts';
 
-export function generateMathProblems(count: number): TopicData[] {
+export function generateMathProblems(count: number): TopicDataAdmin[] {
   const operations = ['+', '-', '*', '/'];
   const difficulties = ['简单', '中等', '困难'];
-  const tableData: TopicData[] = [];
+  const tableData: TopicDataAdmin[] = [];
 
   for (let i = 1; i <= count; i++) {
     const num1 = Math.floor(Math.random() * 10) + 1;
@@ -27,27 +27,21 @@ export function generateMathProblems(count: number): TopicData[] {
         while (num2 === 0) {
           num2 = Math.floor(Math.random() * 10) + 1;
         }
-        answer = num1 / num2;
+        // answer = num1 / num2;
         // 如果需要整数答案，可以使用 Math.floor 来取整
-        // answer = Math.floor(num1 / num2);
+        answer = Math.floor(num1 / num2);
         break;
       default:
         answer = 0; // 如果运算符不是预期的四种之一，给 answer 一个默认值
     }
 
     tableData.push({
-      index: i,
-      topic: `${num1} ${operation} ${num2}`,
+      problemid: i,
+      parm1: num1.toString(),
+      parm2: num2.toString(),
       answer: answer.toString(),
-      type:
-        operation === '+'
-          ? '加法'
-          : operation === '-'
-            ? '减法'
-            : operation === '*'
-              ? '乘法'
-              : '除法',
-      difficulty: difficulty
+      symbol: operation,
+      rank: difficulty
     });
   }
 

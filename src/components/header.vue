@@ -99,6 +99,7 @@ state.circleUrl = store.getUserImage;
 const content = store.user.username;
 
 const logout = () => {
+  sessionStorage.removeItem('token');
   store.logout();
   router.push({ name: 'login' });
 };

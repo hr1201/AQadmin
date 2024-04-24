@@ -31,9 +31,7 @@ router.beforeEach((to, _from, next) => {
       type: 'error',
       duration: 1200
     });
-    setTimeout(() => {
-      next('/');
-    }, 500);
+    next('/');
   }
 });
 

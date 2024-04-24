@@ -24,11 +24,11 @@
         >
           <div class="layout">
             <el-form-item class="select" label="类型" prop="region">
-              <el-select v-model="ruleForm.type" placeholder="类型">
-                <el-option label="加法" value="加法" />
-                <el-option label="减法" value="减法" />
-                <el-option label="乘法" value="乘法" />
-                <el-option label="除法" value="除法" />
+              <el-select v-model="ruleForm.symbol" placeholder="类型">
+                <el-option label="加法" value="+" />
+                <el-option label="减法" value="-" />
+                <el-option label="乘法" value="*" />
+                <el-option label="除法" value="/" />
               </el-select>
             </el-form-item>
 
@@ -36,14 +36,14 @@
               随机生成算术参数
             </el-button>
           </div>
-          <el-form-item class="text" label="参数1" prop="one">
-            <el-input v-model="ruleForm.one" />
+          <el-form-item class="text" label="参数1" prop="parm1">
+            <el-input v-model="ruleForm.parm1" />
           </el-form-item>
-          <el-form-item class="text" label="参数2" prop="two">
-            <el-input v-model="ruleForm.two" />
+          <el-form-item class="text" label="参数2" prop="parm2">
+            <el-input v-model="ruleForm.parm2" />
           </el-form-item>
-          <el-form-item class="radio" label="难度" prop="difficulty">
-            <el-radio-group v-model="ruleForm.difficulty">
+          <el-form-item class="radio" label="难度" prop="rank">
+            <el-radio-group v-model="ruleForm.rank">
               <el-radio value="简单">简单</el-radio>
               <el-radio value="中等">中等</el-radio>
               <el-radio value="困难">困难</el-radio>
@@ -65,22 +65,26 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { DArrowLeft } from '@element-plus/icons-vue';
 import { generateMathProblems } from '../helper/topicBuild.ts';
 import { useRouter } from 'vue-router';
+import { setTask } from '../../../http/index.ts';
 
 const router = useRouter();
 
 interface RuleForm {
-  type: string;
-  one: string;
-  two: string;
-  difficulty: string;
+  type?: string;
+  parm1: string;
+  parm2: string;
+  rank: string;
+  symbol: string;
+  answer?: string;
 }
 
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive<RuleForm>({
-  type: '',
-  one: '',
-  two: '',
-  difficulty: ''
+  symbol: '',
+  parm1: '',
+  parm2: '',
+  rank: '',
+  answer: ''
 });
 
 const rules = reactive<FormRules<RuleForm>>({
@@ -91,7 +95,7 @@ const rules = reactive<FormRules<RuleForm>>({
       trigger: 'change'
     }
   ],
-  one: [
+  parm1: [
     {
       type: 'string',
       required: true,
@@ -99,7 +103,7 @@ const rules = reactive<FormRules<RuleForm>>({
       trigger: 'change'
     }
   ],
-  two: [
+  parm2: [
     {
       type: 'string',
       required: true,
@@ -107,7 +111,7 @@ const rules = reactive<FormRules<RuleForm>>({
       trigger: 'change'
     }
   ],
-  difficulty: [
+  rank: [
     {
       required: true,
       message: '请选择难度',
@@ -122,13 +126,16 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      router.push({
-        // 使用params进行路由传参必须传入name
-        // name: 'topicManagement',
-        path: '/topicManagement',
-        // 路由传参
-        query: ruleForm
-        // params: ruleForm
+      ruleForm.answer = eval(ruleForm.parm1 + ruleForm.symbol + ruleForm.parm2);
+      setTask(ruleForm).then((response: any) => {
+        if (response.status === 200 && response.data === '增加题目成功') {
+          ElMessage.success('增加题目成功');
+          router.push({
+            path: '/topicManagement'
+          });
+        } else {
+          ElMessage.error('增加题目失败');
+        }
       });
     } else {
       console.log('错误提交!', fields);
@@ -139,10 +146,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 // 随机生产算术参数
 const ranbuild = () => {
   let nums = generateMathProblems(1)[0];
-  ruleForm.type = nums.type;
-  ruleForm.one = nums.topic;
-  ruleForm.two = nums.answer;
-  ruleForm.difficulty = nums.difficulty;
+  ruleForm.symbol = nums.symbol;
+  ruleForm.parm1 = nums.parm1;
+  ruleForm.parm2 = nums.parm2;
+  ruleForm.rank = nums.rank;
 };
 
 // 重置

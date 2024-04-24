@@ -48,6 +48,8 @@
 <script setup lang="ts">
 import login from './login.vue';
 import captcha from './captcha.vue';
+import { updatePsw } from '../../../http/index.ts';
+
 // 动态组件，可以动态切换
 const change = shallowRef<any>(0);
 
@@ -55,6 +57,16 @@ const userData = reactive({
   password: '',
   captcha: ''
 });
+
+// 通过defineProps来获取父组件的username
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps({
+  adminname: {
+    type: String,
+    defalue: ''
+  }
+});
+console.log(props.adminname);
 
 // 获取captcha组件的引用
 const captchaN = ref<InstanceType<typeof captcha>>();
@@ -67,15 +79,21 @@ const getVerifyCodeStr = (codestr: string) => {
 
 // 修改密码确认按钮，判断用户输入的验证码是否正确，不正确进行重新输入，后调用请求
 const onSubmit = async (userData: any) => {
-  console.log(userData.password + 'submit!' + userData.captcha);
+  console.log(userData.password + 'submit!' + userData.captcha + userData.adminname);
   if (userData.password == '') {
     ElMessage.error('新密码不能为空！！！');
   } else if (captchaTrue.value !== userData.captcha) {
     captchaN.value?.drawPic();
     ElMessage.error('验证码输入错误！！！');
   } else {
-    // 最后一步，切换组件
-    change.value = login;
+    updatePsw(props.adminname as string, userData.password).then((response: any) => {
+      if (response.status === 200 && response.data === '密码修改了也更新了') {
+        ElMessage.success('修改成功！');
+        change.value = login;
+      } else {
+        ElMessage.error('出现错误');
+      }
+    });
   }
 };
 </script>
